@@ -1,0 +1,39 @@
+<section class="todoapp">
+  <header class="header">
+    <h1>{{title}}</h1>
+    <input [(ngModel)]="inputItem" (keyup.enter)="addItem()" class="new-todo" [placeholder]="placeholder" autofocus>
+  </header>
+  <section class="main">
+    <input id="toggle-all" class="toggle-all" type="checkbox" [checked]="toggleAllBtn" (click)="toggleAll()">
+    <label for="toggle-all">Mark all as complete</label>
+    <ul class="todo-list">
+      <li *ngFor="let item of nowTodoList; let i=index" [class]="{completed: item.Completed, editing: item.isEdit}">
+        <div class="view">
+          <input type="checkbox" (click)="clickBtn(item)" class="toggle" [checked]="item.Completed">
+          <label (dblclick)="edit(item)">{{ item.Title }}</label>
+          <button class="destroy" (click)="delete(item)"></button>
+        </div>
+        <input #todoInput *ngIf="item.isEdit" [(ngModel)]="item.Title" (keyup.enter)="updateItem(item)"
+          (blur)="updateItem(item)" (mouseenter)="todoInput.focus()" [value]="item.Title" type="text" class="edit" />
+      </li>
+    </ul>
+  </section>
+  <footer class="footer">
+    <span class="todo-count"><strong>{{todoActive.length}}</strong></span>
+    <ul class="filters">
+      <li>
+        <a href="#/" [class.selected]="nowTodoStatus===todoStatus.All"
+          (click)="setTodoStatusType(todoStatus.All)">All</a>
+      </li>
+      <li>
+        <a href="#/active" [class.selected]="nowTodoStatus===todoStatus.Active"
+          (click)="setTodoStatusType(todoStatus.Active)">Active</a>
+      </li>
+      <li>
+        <a href="#/completed" [class.selected]="nowTodoStatus===todoStatus.Completed"
+          (click)="setTodoStatusType(todoStatus.Completed)">Completed</a>
+      </li>
+    </ul>
+    <button class="clear-completed" (click)="clearCompleted()" *ngIf="todoCompleted.length">Clear completed</button>
+  </footer>
+</section>
